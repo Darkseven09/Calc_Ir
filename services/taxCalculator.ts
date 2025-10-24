@@ -46,8 +46,6 @@ export function calculateProposedIR(monthlySalary: number, rules: ProposedRules)
                 deduction: bracket.deduction,
             }
         };
-    }
-    
     } else if (monthlySalary <= rules.standardRangeStart) {
         const tier = rules.discountTiers.find(t => monthlySalary <= t.limit);
         if (tier) {
