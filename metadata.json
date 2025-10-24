@@ -1,0 +1,5 @@
+{
+  "name": "Calculadora de IR Proposta",
+  "description": "Uma calculadora para simular o Imposto de Renda com base nas novas propostas de isenção e faixas de desconto.",
+  "requestFramePermissions": []
+}
