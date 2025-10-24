@@ -72,8 +72,10 @@
         const PROPOSED_RULES = {
           exemptionLimit: 5000,
           discountTiers: [
-            { limit: 6000, discount: 0.75 },
-            { limit: 7350, discount: 0.50 },
+            { limit: 5500, discount: 0.75 },
+            { limit: 6000, discount: 0.50 },
+            { limit: 6500, discount: 0.25 },
+            { limit: 7350, discount: 0.10 },
           ],
           standardRangeStart: 7350,
         };
@@ -318,6 +320,11 @@
                           )}
                         </div>
                     </main>
+                    <footer className="w-full max-w-2xl mx-auto mt-4 text-center text-xs text-gray-400 p-4 border-t border-gray-medium/50">
+                        <h4 className="font-bold text-gray-300 my-2">Ressalvas importantes</h4>
+                        <p>Essas são simulações divulgadas como exemplos, não garantias legalmente gravadas de “para cada valor X → desconto Y%”.</p>
+                        <p className="mt-1">O texto final do Projeto de Lei (PL 1087/2025) pode sofrer alterações antes da sanção.</p>
+                    </footer>
                    </div>
                 </div>
             );
