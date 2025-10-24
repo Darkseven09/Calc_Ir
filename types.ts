@@ -16,6 +16,8 @@ export interface ProposedRules {
   exemptionLimit: number;
   discountTiers: DiscountTier[];
   standardRangeStart: number;
+  highIncomeMonthlyThreshold: number;
+  highIncomeMinimumRate: number;
 }
 
 export interface CalculationResult {
@@ -29,5 +31,6 @@ export interface CalculationResult {
     discountApplied?: number;
     aliquot?: number;
     deduction?: number;
+    minimumRateApplied?: number;
   };
 }

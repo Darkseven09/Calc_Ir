@@ -48,7 +48,7 @@ export function calculateProposedIR(monthlySalary: number, rules: ProposedRules)
         };
     }
     
-    if (monthlySalary > rules.exemptionLimit && monthlySalary <= rules.standardRangeStart) {
+    } else if (monthlySalary <= rules.standardRangeStart) {
         const tier = rules.discountTiers.find(t => monthlySalary <= t.limit);
         if (tier) {
             const finalTax = currentTax * (1 - tier.discount);
@@ -67,9 +67,9 @@ export function calculateProposedIR(monthlySalary: number, rules: ProposedRules)
             };
         }
     }
-    
-    // Standard calculation, finalTax is the same as currentTax
-    return {
+
+    // Fallback to standard calculation for salaries above the discount range
+    const standardResult: CalculationResult = {
         finalTax: currentTax,
         currentTax,
         netDifference: 0, // No change
@@ -81,4 +81,23 @@ export function calculateProposedIR(monthlySalary: number, rules: ProposedRules)
             deduction: bracket.deduction,
         }
     };
+
+    // The high-income rule is an override on top of the standard calculation
+    if (monthlySalary >= rules.highIncomeMonthlyThreshold) {
+        const minimumTax = monthlySalary * rules.highIncomeMinimumRate;
+        if (minimumTax > currentTax) {
+            return {
+                ...standardResult,
+                finalTax: minimumTax,
+                netDifference: currentTax - minimumTax,
+                ruleApplied: 'high-income',
+                details: {
+                    ...standardResult.details,
+                    minimumRateApplied: rules.highIncomeMinimumRate,
+                }
+            };
+        }
+    }
+    
+    return standardResult;
 }
