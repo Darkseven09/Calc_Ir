@@ -1,14 +1,12 @@
-const CACHE_NAME = 'ir-calculator-cache-v3'; // Versão do cache incrementada
+const CACHE_NAME = 'calculadora-ir-cache-v2';
 const urlsToCache = [
-  '.',
-  'index.html',
-  'manifest.json',
-  'img/icon-192.png',
-  'img/icon-512.png',
-  'https://cdn.tailwindcss.com',
+  './',
+  './index.html',
+  './manifest.json',
+  'https://unpkg.com/react@18/umd/react.production.min.js',
+  'https://unpkg.com/react-dom@18/umd/react-dom.production.min.js',
   'https://unpkg.com/@babel/standalone/babel.min.js',
-  'https://aistudiocdn.com/react@^19.2.0',
-  'https://aistudiocdn.com/react-dom@^19.2.0/client'
+  'https://cdn.tailwindcss.com'
 ];
 
 self.addEventListener('install', event => {
@@ -16,57 +14,21 @@ self.addEventListener('install', event => {
     caches.open(CACHE_NAME)
       .then(cache => {
         console.log('Opened cache');
-        // Usar addAll com { mode: 'no-cors' } para CDNs pode ser arriscado
-        // mas é uma estratégia para evitar falhas de cache por CORS.
-        // A melhor abordagem é garantir que os CDNs sirvam com CORS headers.
-        // Por agora, vamos manter o addAll simples.
-        return Promise.all(
-          urlsToCache.map(url => {
-            return cache.add(url).catch(err => {
-              console.warn(`Failed to cache ${url}:`, err);
-            });
-          })
-        );
+        return cache.addAll(urlsToCache);
       })
   );
 });
 
 self.addEventListener('fetch', event => {
-  // Ignora requisições que não são GET
-  if (event.request.method !== 'GET') {
-    return;
-  }
-  
   event.respondWith(
     caches.match(event.request)
       .then(response => {
-        // Cache hit - return response
         if (response) {
           return response;
         }
-
-        // Clone a requisição. Uma requisição é um stream e só pode ser consumida uma vez.
-        const fetchRequest = event.request.clone();
-
-        return fetch(fetchRequest).then(
-          response => {
-            // Verifica se recebemos uma resposta válida
-            if (!response || response.status !== 200 || response.type !== 'basic' && response.type !== 'cors') {
-              return response;
-            }
-
-            // Clone a resposta. Uma resposta é um stream e só pode ser consumida uma vez.
-            const responseToCache = response.clone();
-
-            caches.open(CACHE_NAME)
-              .then(cache => {
-                cache.put(event.request, responseToCache);
-              });
-
-            return response;
-          }
-        );
-      })
+        return fetch(event.request);
+      }
+    )
   );
 });
 
@@ -77,7 +39,6 @@ self.addEventListener('activate', event => {
       return Promise.all(
         cacheNames.map(cacheName => {
           if (cacheWhitelist.indexOf(cacheName) === -1) {
-            console.log('Deleting old cache:', cacheName);
             return caches.delete(cacheName);
           }
         })
