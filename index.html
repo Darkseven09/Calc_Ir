@@ -111,10 +111,10 @@
             let ruleApplied = 'standard';
             let discountApplied = 0;
 
-            if (irBase <= PROPOSED_RULES.exemptionLimit) {
+            if (grossSalary <= PROPOSED_RULES.exemptionLimit) {
                 finalTax = 0;
                 ruleApplied = 'exemption';
-            } else if (irBase <= PROPOSED_RULES.standardRangeStart) {
+            } else if (grossSalary <= PROPOSED_RULES.standardRangeStart) {
                 const tier = PROPOSED_RULES.discountTiers.find(t => irBase <= t.limit);
                 if (tier) {
                     finalTax = currentTax * (1 - tier.discount);
