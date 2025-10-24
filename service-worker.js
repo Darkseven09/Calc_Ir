@@ -1,10 +1,9 @@
-const CACHE_NAME = 'ir-calculator-cache-v4'; // Versão do cache incrementada
+const CACHE_NAME = 'ir-calculator-cache-v5'; // Versão do cache incrementada
 const urlsToCache = [
   '.',
   'index.html',
   'manifest.json',
-  'img/icon-192.png',
-  'img/icon-512.png',
+  'img/ir.png',
   'https://cdn.tailwindcss.com',
   'https://unpkg.com/@babel/standalone/babel.min.js',
   'https://aistudiocdn.com/react@^19.2.0',
