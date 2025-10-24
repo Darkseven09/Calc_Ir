@@ -1,12 +1,14 @@
-const CACHE_NAME = 'calculadora-ir-cache-v2';
+const CACHE_NAME = 'ir-calculator-cache-v4'; // Versão do cache incrementada
 const urlsToCache = [
-  './',
-  './index.html',
-  './manifest.json',
-  'https://unpkg.com/react@18/umd/react.production.min.js',
-  'https://unpkg.com/react-dom@18/umd/react-dom.production.min.js',
+  '.',
+  'index.html',
+  'manifest.json',
+  'img/icon-192.png',
+  'img/icon-512.png',
+  'https://cdn.tailwindcss.com',
   'https://unpkg.com/@babel/standalone/babel.min.js',
-  'https://cdn.tailwindcss.com'
+  'https://aistudiocdn.com/react@^19.2.0',
+  'https://aistudiocdn.com/react-dom@^19.2.0/client'
 ];
 
 self.addEventListener('install', event => {
