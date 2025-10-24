@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF--ainit" />
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Calculadora de IR Proposta</title>
     <link rel="manifest" href="manifest.json">
@@ -76,7 +76,9 @@
             if (salary <= 0) return 0;
             if (salary > 7786.02) return MAX_INSS_DEDUCTION;
             
-            const bracket = INSS_BRACKETS.find(b => salary <= b.limit) ?? INSS_BRACKETS[INSS_BRACKETS.length - 1];
+            const bracket = INSS_BRACKETS.find(b => salary <= b.limit);
+            if (!bracket) return MAX_INSS_DEDUCTION;
+            
             return salary * bracket.rate - bracket.deduction;
         }
 
@@ -208,10 +210,15 @@
                     initial: { title: "Aguardando valor", Icon: InfoIcon, color: "gray", description: "Insira seu salário para simular o cálculo." },
                 };
                 const { Icon, color, description } = contentMap[result.ruleApplied];
+                
+                // Tailwind can't build classes from variables, so we map them
                 const colorClasses = {
-                  bg: `bg-${color}-500/10`,
-                  text: `text-${color}-400`
-                };
+                  green: { bg: 'bg-green-500/10', text: 'text-green-400'},
+                  cyan: { bg: 'bg-cyan-500/10', text: 'text-cyan-400'},
+                  amber: { bg: 'bg-amber-500/10', text: 'text-amber-400'},
+                  gray: { bg: 'bg-gray-500/10', text: 'text-gray-400'}
+                }[color];
+
 
                 return (
                     <div className={`mt-4 p-4 rounded-lg flex items-center justify-center gap-3 text-sm ${colorClasses.bg} ${colorClasses.text}`}>
